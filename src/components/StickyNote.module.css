@@ -1,0 +1,80 @@
+.stickyNote {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  background: #fff4a8;
+  border: 1px solid rgba(176, 152, 53, 0.2);
+  border-radius: 8px;
+  color: #5c4b1f;
+  overflow: visible;
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.12),
+    0 4px 8px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.stickyNote:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 14px 26px rgba(0, 0, 0, 0.14),
+    0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stickyNote::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.08) 18%,
+    rgba(0, 0, 0, 0.02) 100%
+  );
+}
+
+.corner {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #f2de72 0%, #e4cd57 100%);
+  clip-path: polygon(100% 0, 0 100%, 100% 100%);
+  border-bottom-right-radius: 8px;
+  box-shadow:
+    -3px -3px 6px rgba(0, 0, 0, 0.08) inset,
+    -2px -2px 4px rgba(255, 255, 255, 0.35) inset;
+}
+
+.corner::after {
+  content: "";
+  position: absolute;
+  right: 4px;
+  bottom: 3px;
+  width: 26px;
+  height: 12px;
+  background: rgba(0, 0, 0, 0.18);
+  filter: blur(6px);
+  transform: rotate(-8deg);
+  z-index: -1;
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
