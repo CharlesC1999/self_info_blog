@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import headImage from "@/assets/8bit-head.png";
 import pinImage from "@/assets/pin.png";
 import { clamp } from "@/utils/clamp";
+import { getNextStackOrder } from "@/utils/stacking";
 
 const HEAD_SCALE = 0.675;
 const PIN_SCALE = 0.06;
@@ -22,6 +23,7 @@ export default function DraggableHead() {
   const headHeight = headImage.height * HEAD_SCALE;
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
+  const [zIndex, setZIndex] = useState(1);
 
   useEffect(() => {
     const updateInitialPosition = () => {
@@ -67,6 +69,7 @@ export default function DraggableHead() {
     };
 
     event.currentTarget.setPointerCapture(event.pointerId);
+    setZIndex(getNextStackOrder());
     setIsDragging(true);
   };
 
@@ -112,6 +115,7 @@ export default function DraggableHead() {
           top: `${position.y}px`,
           width: `${headWidth}px`,
           height: `${headHeight}px`,
+          zIndex,
           cursor: isDragging ? "grabbing" : "grab",
           touchAction: "none",
           userSelect: "none",

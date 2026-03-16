@@ -1,0 +1,6 @@
+.plate {
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #f2ede3;
+}

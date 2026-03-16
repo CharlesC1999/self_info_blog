@@ -1,0 +1,10 @@
+.iconStack {
+  position: relative;
+  width: 82px;
+  height: 100px;
+}
+
+.iconTape {
+  left: 8px;
+  top: -2px;
+}
