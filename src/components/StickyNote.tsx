@@ -2,10 +2,14 @@
 
 import Image from "next/image";
 import { ReactNode, useEffect, useRef, useState } from "react";
+import headImage from "@/assets/8bit-head.png";
 import pinImage from "@/assets/pin.png";
 import styles from "./StickyNote.module.css";
 import { clamp } from "@/utils/clamp";
+import { HEAD_SCALE, MOBILE_BREAKPOINT, MOBILE_HEAD_NOTE_GAP, MOBILE_HEAD_TOP_OFFSET } from "@/utils/mobileLayout";
 import { getNextStackOrder } from "@/utils/stacking";
+
+const INITIAL_NOTE_Z_INDEX = 1;
 
 type StickyNoteProps = {
   children: ReactNode;
@@ -52,7 +56,7 @@ export default function StickyNote({
     y: initialY,
   });
   const [isDragging, setIsDragging] = useState(false);
-  const [zIndex, setZIndex] = useState(1);
+  const [zIndex, setZIndex] = useState(INITIAL_NOTE_Z_INDEX);
 
   useEffect(() => {
     const updatePosition = () => {
@@ -64,6 +68,25 @@ export default function StickyNote({
 
       const { width: noteWidth, height: noteHeight } =
         note.getBoundingClientRect();
+
+      if (window.innerWidth <= MOBILE_BREAKPOINT) {
+        const headHeight = headImage.height * HEAD_SCALE;
+
+        setPosition({
+          x: clamp(
+            (window.innerWidth - noteWidth) / 2,
+            0,
+            Math.max(window.innerWidth - noteWidth, 0)
+          ),
+          y: clamp(
+            MOBILE_HEAD_TOP_OFFSET + headHeight + MOBILE_HEAD_NOTE_GAP,
+            0,
+            Math.max(window.innerHeight - noteHeight, 0)
+          ),
+        });
+
+        return;
+      }
 
       setPosition((currentPosition) => ({
         x: clamp(

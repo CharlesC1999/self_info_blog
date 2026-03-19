@@ -5,11 +5,17 @@ import { useEffect, useRef, useState } from "react";
 import headImage from "@/assets/8bit-head.png";
 import pinImage from "@/assets/pin.png";
 import { clamp } from "@/utils/clamp";
+import {
+  HEAD_SCALE,
+  MOBILE_BREAKPOINT,
+  MOBILE_HEAD_LEFT_OFFSET,
+  MOBILE_HEAD_TOP_OFFSET,
+} from "@/utils/mobileLayout";
 import { getNextStackOrder } from "@/utils/stacking";
 
-const HEAD_SCALE = 0.675;
 const PIN_SCALE = 0.06;
 const INITIAL_Y_OFFSET = -48;
+const INITIAL_HEAD_Z_INDEX = 2;
 
 type Position = {
   x: number;
@@ -23,7 +29,7 @@ export default function DraggableHead() {
   const headHeight = headImage.height * HEAD_SCALE;
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-  const [zIndex, setZIndex] = useState(1);
+  const [zIndex, setZIndex] = useState(INITIAL_HEAD_Z_INDEX);
 
   useEffect(() => {
     const updateInitialPosition = () => {
@@ -34,10 +40,18 @@ export default function DraggableHead() {
       }
 
       const { width, height } = container.getBoundingClientRect();
+      const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+      const centeredX = (width - headWidth) / 2;
 
       setPosition({
-        x: (width - headWidth) / 2,
-        y: (height - headHeight) / 2 + INITIAL_Y_OFFSET,
+        x: clamp(
+          isMobile ? centeredX + MOBILE_HEAD_LEFT_OFFSET : centeredX,
+          0,
+          Math.max(width - headWidth, 0)
+        ),
+        y: isMobile
+          ? MOBILE_HEAD_TOP_OFFSET
+          : (height - headHeight) / 2 + INITIAL_Y_OFFSET,
       });
     };
 

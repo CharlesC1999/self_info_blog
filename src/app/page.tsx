@@ -9,21 +9,16 @@ import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div style={{ position: "relative" }}>
+    <div className={styles.hero}>
       <DraggableHead />
-      <StickyNote
-        initialX={820}
-        initialY={60}
-        pinLeft={16}
-        pinTop={-16}
-      >
+      <StickyNote initialX={820} initialY={60} pinLeft={16} pinTop={-16}>
         <h3>Hi, I&apos;m Charles</h3>
         <br />
-        這裡會放自我介紹、背景與有興趣的事情。
+        Frontend developer exploring interaction, motion, and playful UI details.
         <br />
-        也可以把最近的專案、使用的技術或近況寫在這裡。
+        This page mixes draggable notes, pinned icons, and scroll-based animation experiments.
       </StickyNote>
-      <div style={{ position: "absolute", left: "120px", top: "456px", zIndex: 2 }}>
+      <div className={styles.iconGroupLeft}>
         <div className={styles.iconStack}>
           <Tape className={styles.iconTape} width={66} height={20} rotation={-12} />
           <IconPlate size={82}>
@@ -31,7 +26,7 @@ export default function Home() {
           </IconPlate>
         </div>
       </div>
-      <div style={{ position: "absolute", left: "280px", top: "456px", zIndex: 2 }}>
+      <div className={styles.iconGroupRight}>
         <div className={styles.iconStack}>
           <Tape className={styles.iconTape} width={62} height={18} rotation={10} />
           <IconPlate size={82}>

@@ -1,3 +1,22 @@
+.hero {
+  position: relative;
+  min-height: 720px;
+}
+
+.iconGroupLeft {
+  position: absolute;
+  left: 120px;
+  top: 456px;
+  z-index: 2;
+}
+
+.iconGroupRight {
+  position: absolute;
+  left: 280px;
+  top: 456px;
+  z-index: 2;
+}
+
 .iconStack {
   position: relative;
   width: 82px;

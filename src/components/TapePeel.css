@@ -1,0 +1,228 @@
+.tape-peel {
+  --tape-main: rgba(247, 223, 152, 0.78);
+  --tape-under: rgba(215, 176, 92, 0.94);
+  --tape-under-dark: rgba(164, 122, 51, 0.9);
+  --shadow-strong: rgba(54, 38, 14, 0.26);
+
+  position: absolute;
+  inline-size: var(--tape-width);
+  block-size: var(--tape-height);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  isolation: isolate;
+  transform: rotate(var(--tape-rotation, -8deg));
+  transform-origin: center center;
+  opacity: var(--tape-opacity, 0.65);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tape-peel__label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font: 600 0.75rem/1.1 Arial, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(81, 60, 27, 0.72);
+  pointer-events: none;
+  transition: opacity 220ms ease;
+}
+
+.tape-peel__shadow,
+.tape-peel__stuck,
+.tape-peel__lift-clip {
+  position: absolute;
+  left: 0;
+  border-radius: 4px;
+}
+
+.tape-peel__shadow {
+  top: calc(var(--tape-height) * 0.36);
+  width: calc(100% - 10px);
+  height: calc(var(--tape-height) * 0.82);
+  background: linear-gradient(180deg, rgba(0,0,0,0.08), transparent 80%);
+  filter: blur(6px);
+  transform-origin: left center;
+  transition:
+    transform 520ms cubic-bezier(.2, .8, .2, 1),
+    opacity 520ms cubic-bezier(.2, .8, .2, 1),
+    filter 520ms cubic-bezier(.2, .8, .2, 1);
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tape-peel__stuck {
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.08) 26%, rgba(0,0,0,0.03) 100%),
+    linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.02) 30%, rgba(255,255,255,0.12) 58%, rgba(0,0,0,0.05) 100%),
+    var(--tape-main);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.45) inset,
+    0 -1px 0 rgba(181, 147, 71, 0.15) inset,
+    0 1px 1px rgba(82, 58, 21, 0.08);
+  z-index: 1;
+}
+
+.tape-peel__stuck::before,
+.tape-peel__lift-body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255,255,255,0.03) 0 10px,
+    rgba(168, 136, 69, 0.035) 10px 20px
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+}
+
+.tape-peel__stuck::after {
+  content: "";
+  position: absolute;
+  inset: 2px 8px auto 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), transparent);
+  opacity: 0.7;
+}
+
+.tape-peel__lift-clip {
+  top: 0;
+  right: -2px;
+  left: auto;
+  width: 44%;
+  height: 100%;
+  overflow: visible;
+  z-index: 3;
+  transform-origin: left center;
+  transition: transform 520ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.tape-peel__lift-body {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px 6px 7px 4px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.54), rgba(255,255,255,0.14) 22%, rgba(0,0,0,0.035) 100%),
+    linear-gradient(90deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04) 45%, rgba(0,0,0,0.06)),
+    var(--tape-main);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.38) inset,
+    0 -1px 0 rgba(181,147,71,0.15) inset,
+    6px 10px 14px -12px var(--shadow-strong);
+  transform-origin: 10% 55%;
+  transition:
+    transform 520ms cubic-bezier(.2, .8, .2, 1),
+    box-shadow 520ms cubic-bezier(.2, .8, .2, 1),
+    border-radius 520ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.tape-peel__underside {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.36), rgba(255,255,255,0) 30%),
+    linear-gradient(90deg, rgba(239, 210, 132, 0.88), var(--tape-under) 38%, var(--tape-under-dark));
+  opacity: 0;
+  transform: scaleY(0.86);
+  transform-origin: center center;
+  transition:
+    opacity 520ms cubic-bezier(.2, .8, .2, 1),
+    transform 520ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.tape-peel__shine {
+  position: absolute;
+  inset: 4px 10px auto 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), transparent);
+  opacity: 0.62;
+  filter: blur(1px);
+  transition: transform 520ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.tape-peel__tip {
+  position: absolute;
+  top: -1px;
+  right: -8px;
+  width: 22px;
+  height: calc(100% + 2px);
+  border-radius: 0 8px 8px 0;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.34) 26%, rgba(0,0,0,0.08) 100%),
+    linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0));
+  clip-path: polygon(8% 0%, 100% 4%, 93% 96%, 0% 100%, 18% 78%, 18% 22%);
+  opacity: 0.92;
+  transform-origin: left center;
+  transition:
+    transform 520ms cubic-bezier(.2, .8, .2, 1),
+    opacity 520ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.tape-peel:hover .tape-peel__label,
+.tape-peel:focus-visible .tape-peel__label {
+  opacity: 0;
+}
+
+.tape-peel:hover .tape-peel__shadow,
+.tape-peel:focus-visible .tape-peel__shadow {
+  transform: translateY(6px) translateX(8px) scaleX(0.72) scaleY(1.12);
+  opacity: 0.92;
+  filter: blur(10px);
+}
+
+.tape-peel:hover .tape-peel__lift-clip,
+.tape-peel:focus-visible .tape-peel__lift-clip {
+  transform: translateY(-1px);
+}
+
+.tape-peel:hover .tape-peel__lift-body,
+.tape-peel:focus-visible .tape-peel__lift-body {
+  border-radius: 6px 10px 12px 4px;
+  transform: perspective(900px) rotateY(-34deg) rotateX(12deg) translateY(-5px) translateX(6px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.42) inset,
+    0 -1px 0 rgba(181,147,71,0.12) inset,
+    10px 14px 18px -12px var(--shadow-strong);
+}
+
+.tape-peel:hover .tape-peel__underside,
+.tape-peel:focus-visible .tape-peel__underside {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.tape-peel:hover .tape-peel__shine,
+.tape-peel:focus-visible .tape-peel__shine {
+  transform: translateY(-1px) translateX(4px) scaleX(0.92);
+}
+
+.tape-peel:hover .tape-peel__tip,
+.tape-peel:focus-visible .tape-peel__tip {
+  opacity: 1;
+  transform: perspective(900px) rotateY(-18deg) skewY(-4deg) translateX(6px);
+}
+
+.tape-peel:focus-visible {
+  outline: 2px solid rgba(133, 103, 47, 0.4);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tape-peel,
+  .tape-peel * {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}

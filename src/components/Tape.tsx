@@ -23,16 +23,5 @@ export default function Tape({
     "--tape-rotation": `${rotation}deg`,
   };
 
-  return (
-    <span className={`${styles.tape} ${className}`} style={style}>
-      <span className={styles.base}>
-        <span className={styles.baseFace} />
-      </span>
-      <span className={styles.shadow} />
-      <span className={styles.flap}>
-        <span className={styles.face} />
-        <span className={styles.underside} />
-      </span>
-    </span>
-  );
+  return <span className={`${styles.tape} ${className}`} style={style} />;
 }
