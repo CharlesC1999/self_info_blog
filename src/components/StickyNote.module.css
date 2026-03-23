@@ -152,16 +152,19 @@
 .title {
   position: relative;
   z-index: 1;
-  margin: 10px 0 14px;
-  font-size: 18px;
+  margin: var(--sticky-note-title-margin, 10px 0 14px);
+  font-size: var(--sticky-note-title-size, 18px);
   font-weight: 700;
-  letter-spacing: 0.04em;
+  line-height: var(--sticky-note-title-line-height, 1.4);
+  letter-spacing: var(--sticky-note-title-letter-spacing, 0.04em);
 }
 
 .content {
   position: relative;
   z-index: 1;
-  line-height: 1.8;
+  line-height: var(--sticky-note-content-line-height, 1.8);
+  padding-top: var(--sticky-note-content-padding-top, 0);
+  font-family: var(--sticky-note-content-font, inherit);
   white-space: pre-wrap;
   word-break: break-word;
 }

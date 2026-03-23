@@ -1,0 +1,112 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 22px 0 22px;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  pointer-events: auto;
+}
+
+.option {
+  position: relative;
+  display: inline-flex;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #5f646c;
+  cursor: pointer;
+}
+
+.circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 3px solid #7a7f87;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  filter: saturate(0.75);
+}
+
+.circleLatin {
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.circleHan {
+  font-family: "Segoe Print", "Bradley Hand", "Noto Sans TC", sans-serif;
+}
+
+.check {
+  position: absolute;
+  left: 50%;
+  bottom: -17px;
+  width: 38px;
+  height: 30px;
+  transform: translateX(-50%) rotate(-2deg) scale(0.82);
+  transform-origin: center;
+  opacity: 0;
+  transition: opacity 140ms ease-out, transform 140ms ease-out;
+  pointer-events: none;
+}
+
+.checkVisible {
+  opacity: 1;
+  transform: translateX(-50%) rotate(-2deg) scale(1);
+}
+
+.checkIcon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.checkIcon path {
+  fill: none;
+  stroke: #d85a4f;
+  stroke-width: 2.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.checkIcon path:last-child {
+  stroke-width: 2.2;
+  opacity: 0.68;
+}
+
+@media (max-width: 500px) {
+  .wrapper {
+    padding: 14px 16px 0 16px;
+  }
+
+  .toggle {
+    gap: 12px;
+  }
+
+  .circle {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+
+  .check {
+    bottom: -14px;
+    width: 32px;
+    height: 25px;
+  }
+}

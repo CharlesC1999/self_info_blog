@@ -37,9 +37,6 @@ a {
   html,
   body {
     height: 100%;
-  }
-
-  body {
-    overscroll-behavior-y: contain;
+    overflow: hidden;
   }
 }
