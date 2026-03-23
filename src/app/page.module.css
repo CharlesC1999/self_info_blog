@@ -1,29 +1,108 @@
 .hero {
   position: relative;
-  min-height: 720px;
+  min-height: 980px;
 }
 
-.iconGroupLeft {
-  position: absolute;
-  left: 120px;
-  top: 456px;
+.profileNote {
   z-index: 2;
 }
 
-.iconGroupRight {
-  position: absolute;
-  left: 280px;
-  top: 456px;
+.socialNote {
   z-index: 2;
 }
 
-.iconStack {
-  position: relative;
-  width: 82px;
-  height: 100px;
+.socialCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
 }
 
-.iconTape {
-  left: 8px;
-  top: -2px;
+.socialIconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 66px;
+  height: 66px;
+}
+
+.socialImage {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.socialIconSvg {
+  width: 52px;
+  height: 52px;
+  display: block;
+}
+
+.socialLabel {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.mobileSnapTrack,
+.mobileDots {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  .hero {
+    min-height: 400svh;
+  }
+
+  .hero > main {
+    position: absolute !important;
+    inset: 0 0 auto 0;
+    min-height: 100svh !important;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .hero > main > div {
+    pointer-events: auto;
+  }
+
+  .mobileSnapTrack {
+    position: relative;
+    display: block;
+    z-index: 0;
+  }
+
+  .mobileSnapSection {
+    height: 100svh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .mobileDots {
+    position: fixed;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 20;
+    pointer-events: none;
+  }
+
+  .mobileDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(84, 92, 108, 0.28);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.45);
+    transition: transform 140ms ease-out, background-color 140ms ease-out;
+  }
+
+  .mobileDotActive {
+    background: rgba(43, 60, 84, 0.86);
+    transform: scale(1.45);
+  }
 }

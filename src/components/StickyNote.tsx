@@ -6,10 +6,76 @@ import headImage from "@/assets/8bit-head.png";
 import pinImage from "@/assets/pin.png";
 import styles from "./StickyNote.module.css";
 import { clamp } from "@/utils/clamp";
-import { HEAD_SCALE, MOBILE_BREAKPOINT, MOBILE_HEAD_NOTE_GAP, MOBILE_HEAD_TOP_OFFSET } from "@/utils/mobileLayout";
+import {
+  HEAD_SCALE,
+  MOBILE_BREAKPOINT,
+  MOBILE_HEAD_NOTE_GAP,
+  MOBILE_HEAD_TOP_OFFSET,
+} from "@/utils/mobileLayout";
 import { getNextStackOrder } from "@/utils/stacking";
 
 const INITIAL_NOTE_Z_INDEX = 1;
+
+type StickyNoteColor =
+  | "yellow"
+  | "pink"
+  | "blue"
+  | "green"
+  | "peach"
+  | {
+      base: string;
+      tint?: string;
+      line?: string;
+      text?: string;
+      border?: string;
+    };
+
+const NOTE_COLOR_MAP = {
+  yellow: {
+    base: "#f2df8b",
+    tint: "#f8ecab",
+    line: "rgba(126, 101, 32, 0.26)",
+    text: "#59492a",
+    border: "rgba(151, 121, 34, 0.18)",
+  },
+  pink: {
+    base: "#f3c7cd",
+    tint: "#f8dde1",
+    line: "rgba(147, 74, 94, 0.24)",
+    text: "#62323d",
+    border: "rgba(149, 90, 105, 0.2)",
+  },
+  blue: {
+    base: "#cde3f3",
+    tint: "#e3f0fa",
+    line: "rgba(71, 103, 132, 0.24)",
+    text: "#334b61",
+    border: "rgba(90, 126, 154, 0.2)",
+  },
+  green: {
+    base: "#d8ebc2",
+    tint: "#ebf5dc",
+    line: "rgba(82, 112, 53, 0.24)",
+    text: "#465933",
+    border: "rgba(106, 136, 78, 0.2)",
+  },
+  peach: {
+    base: "#f5d2b2",
+    tint: "#fae3cf",
+    line: "rgba(149, 99, 55, 0.24)",
+    text: "#63462f",
+    border: "rgba(161, 110, 68, 0.2)",
+  },
+} satisfies Record<
+  string,
+  {
+    base: string;
+    tint: string;
+    line: string;
+    text: string;
+    border: string;
+  }
+>;
 
 type StickyNoteProps = {
   children: ReactNode;
@@ -20,12 +86,16 @@ type StickyNoteProps = {
   title?: string;
   initialX?: number;
   initialY?: number;
+  mobileInitialX?: number;
+  mobileInitialY?: number;
   pinLeft?: number;
   pinTop?: number;
   pinRotation?: number;
   pinDragOffsetX?: number;
   pinDragOffsetY?: number;
   pinDragRotation?: number;
+  color?: StickyNoteColor;
+  draggable?: boolean;
 };
 
 type Position = {
@@ -42,12 +112,16 @@ export default function StickyNote({
   title,
   initialX = 32,
   initialY = 32,
+  mobileInitialX,
+  mobileInitialY,
   pinLeft = 42,
   pinTop = -10,
   pinRotation = -9,
   pinDragOffsetX = 4,
   pinDragOffsetY = -5,
   pinDragRotation = -5,
+  color = "yellow",
+  draggable = true,
 }: StickyNoteProps) {
   const noteRef = useRef<HTMLDivElement | null>(null);
   const dragOffsetRef = useRef<Position>({ x: 0, y: 0 });
@@ -71,15 +145,25 @@ export default function StickyNote({
 
       if (window.innerWidth <= MOBILE_BREAKPOINT) {
         const headHeight = headImage.height * HEAD_SCALE;
+        const fallbackX = clamp(
+          (window.innerWidth - noteWidth) / 2,
+          0,
+          Math.max(window.innerWidth - noteWidth, 0)
+        );
+        const fallbackY = clamp(
+          MOBILE_HEAD_TOP_OFFSET + headHeight + MOBILE_HEAD_NOTE_GAP,
+          0,
+          Math.max(window.innerHeight - noteHeight, 0)
+        );
 
         setPosition({
           x: clamp(
-            (window.innerWidth - noteWidth) / 2,
+            mobileInitialX ?? fallbackX,
             0,
             Math.max(window.innerWidth - noteWidth, 0)
           ),
           y: clamp(
-            MOBILE_HEAD_TOP_OFFSET + headHeight + MOBILE_HEAD_NOTE_GAP,
+            mobileInitialY ?? fallbackY,
             0,
             Math.max(window.innerHeight - noteHeight, 0)
           ),
@@ -106,7 +190,7 @@ export default function StickyNote({
     window.addEventListener("resize", updatePosition);
 
     return () => window.removeEventListener("resize", updatePosition);
-  }, []);
+  }, [mobileInitialX, mobileInitialY]);
 
   const clampPosition = (nextX: number, nextY: number) => {
     const note = noteRef.current;
@@ -125,6 +209,10 @@ export default function StickyNote({
   };
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!draggable) {
+      return;
+    }
+
     dragOffsetRef.current = {
       x: event.clientX - position.x,
       y: event.clientY - position.y,
@@ -136,7 +224,7 @@ export default function StickyNote({
   };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDragging) {
+    if (!draggable || !isDragging) {
       return;
     }
 
@@ -149,7 +237,7 @@ export default function StickyNote({
   };
 
   const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDragging) {
+    if (!draggable || !isDragging) {
       return;
     }
 
@@ -165,6 +253,9 @@ export default function StickyNote({
       : `rotate(${pinRotation}deg) translate(0, 0)`,
   };
 
+  const palette =
+    typeof color === "string" ? NOTE_COLOR_MAP[color] ?? NOTE_COLOR_MAP.yellow : color;
+
   return (
     <div
       ref={noteRef}
@@ -173,8 +264,8 @@ export default function StickyNote({
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
       className={`${styles.stickyNote} ${
-        isDragging ? styles.dragging : ""
-      } ${className}`}
+        !draggable ? styles.static : ""
+      } ${isDragging ? styles.dragging : ""} ${className}`}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
@@ -182,16 +273,27 @@ export default function StickyNote({
         width,
         minHeight,
         padding,
+        ["--sticky-note-base" as string]: palette.base,
+        ["--sticky-note-tint" as string]: palette.tint ?? palette.base,
+        ["--sticky-note-line" as string]:
+          palette.line ?? "rgba(126, 101, 32, 0.26)",
+        ["--sticky-note-text" as string]: palette.text ?? "#59492a",
+        ["--sticky-note-border" as string]:
+          palette.border ?? "rgba(151, 121, 34, 0.18)",
       }}
     >
-      <Image
-        src={pinImage}
-        alt="pin"
-        priority
-        draggable={false}
-        className={`${styles.pin} ${isDragging ? styles.pinDragging : ""}`}
-        style={pinStyle}
-      />
+      {draggable ? (
+        <Image
+          src={pinImage}
+          alt="pin"
+          priority
+          draggable={false}
+          className={`${styles.pin} ${isDragging ? styles.pinDragging : ""}`}
+          style={pinStyle}
+        />
+      ) : (
+        <span className={styles.tape} aria-hidden="true" />
+      )}
       {title ? <h3 className={styles.title}>{title}</h3> : null}
       <div className={styles.content}>{children}</div>
     </div>

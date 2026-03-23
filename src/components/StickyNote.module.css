@@ -3,39 +3,79 @@
   display: block;
   box-sizing: border-box;
   overflow: visible;
-  color: #59492a;
+  color: var(--sticky-note-text, #59492a);
   cursor: grab;
   touch-action: none;
   user-select: none;
-  border-radius: 2px;
+  border-radius: 4px 4px 3px 5px;
   background:
-    linear-gradient(180deg, rgba(241, 222, 134, 0.98) 0%, rgba(234, 214, 124, 0.98) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 18%),
+    linear-gradient(180deg, var(--sticky-note-tint, #f8ecab) 0%, var(--sticky-note-base, #f2df8b) 100%),
     repeating-linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.02) 0,
-      rgba(255, 255, 255, 0.02) 1px,
+      90deg,
+      rgba(255, 255, 255, 0.04) 0,
+      rgba(255, 255, 255, 0.04) 1px,
       transparent 1px,
-      transparent 3px
+      transparent 6px
     );
-  border: 1px solid rgba(151, 121, 34, 0.18);
-  box-shadow: none;
+  border: 1px solid var(--sticky-note-border, rgba(151, 121, 34, 0.18));
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.22) inset,
+    0 -8px 16px rgba(103, 80, 24, 0.05) inset,
+    4px 6px 0 rgba(93, 71, 18, 0.08);
   transform: rotate(-2deg) translateY(0);
   transition: transform 140ms ease-out, filter 140ms ease-out;
+}
+
+.static {
+  cursor: default;
+  touch-action: auto;
 }
 
 .stickyNote::before {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.015)),
-    radial-gradient(circle at 18% 14%, rgba(255, 255, 255, 0.08), transparent 22%);
-  opacity: 0.45;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.02)),
+    radial-gradient(circle at 16% 12%, rgba(255, 255, 255, 0.18), transparent 24%),
+    radial-gradient(circle at 82% 78%, rgba(124, 96, 29, 0.08), transparent 28%);
+  opacity: 0.55;
+}
+
+.stickyNote::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0,
+      transparent 26px,
+      var(--sticky-note-line, rgba(126, 101, 32, 0.26)) 26px,
+      var(--sticky-note-line, rgba(126, 101, 32, 0.26)) 28px
+    ),
+    linear-gradient(135deg, rgba(125, 97, 29, 0.15), rgba(255, 255, 255, 0.02));
+  background-size:
+    calc(100% - 24px) 100%,
+    46px 18px;
+  background-position:
+    12px 0,
+    right 10px bottom 8px;
+  background-repeat: no-repeat;
+  opacity: 0.9;
 }
 
 .stickyNote:hover {
   transform: rotate(-2deg) translateY(-1px);
+}
+
+.static:hover {
+  transform: rotate(-2deg) translateY(0);
 }
 
 .dragging {
@@ -55,6 +95,58 @@
 
 .pinDragging {
   filter: drop-shadow(-3px 5px 2px rgba(38, 56, 88, 0.28));
+}
+
+.tape {
+  position: absolute;
+  left: 14px;
+  top: -12px;
+  display: block;
+  width: 72px;
+  height: 22px;
+  border-radius: 3px;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(214, 236, 214, 0.92), rgba(183, 219, 186, 0.92)),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.18) 0,
+      rgba(255, 255, 255, 0.18) 10px,
+      rgba(154, 187, 156, 0.12) 10px,
+      rgba(154, 187, 156, 0.12) 20px
+    );
+  border: 1px solid rgba(118, 154, 120, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 rgba(108, 145, 110, 0.12);
+  transform: rotate(-8deg);
+  transform-origin: center center;
+}
+
+.tape::before,
+.tape::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  opacity: 0.38;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0,
+    rgba(255, 255, 255, 0.22) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+.tape::before {
+  left: 0;
+}
+
+.tape::after {
+  right: 0;
 }
 
 .title {
