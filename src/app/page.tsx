@@ -6,6 +6,7 @@ import cakeIcon from "@/assets/cake.png";
 import githubIcon from "@/assets/github.png";
 import instagramIcon from "@/assets/instagram.svg";
 import linkinIcon from "@/assets/linkin.png";
+import BookmarkTab from "@/components/BookmarkTab";
 import DraggableHead from "@/components/DraggableHead";
 import LanguageToggle from "@/components/LanguageToggle";
 import StickyNote from "@/components/StickyNote";
@@ -16,6 +17,7 @@ const MOBILE_BREAKPOINT = 500;
 const SWIPE_THRESHOLD = 42;
 const WHEEL_THRESHOLD = 22;
 const ANIMATION_MS = 560;
+const BOOKMARK_EXIT_MS = 650;
 
 function SocialNoteContent({
   label,
@@ -34,9 +36,15 @@ function SocialNoteContent({
 
 export default function Home() {
   const [activeMobileSection, setActiveMobileSection] = useState(0);
+  const [isBookmarkExiting, setIsBookmarkExiting] = useState(false);
+  const [hideBookmark, setHideBookmark] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
   const touchStartYRef = useRef<number | null>(null);
   const animationLockRef = useRef(false);
   const animationTimeoutRef = useRef<number | null>(null);
+  const bookmarkTimeoutRef = useRef<number | null>(null);
 
   const isMobileViewport = () =>
     typeof window !== "undefined" && window.innerWidth <= MOBILE_BREAKPOINT;
@@ -50,6 +58,32 @@ export default function Home() {
       0,
       Math.min(MOBILE_SECTION_COUNT - 1, nextSection)
     );
+
+    if (clamped === activeMobileSection) {
+      return;
+    }
+
+    const isLeavingFirstScreen = activeMobileSection === 0 && clamped > 0;
+    const isReturningToFirstScreen = clamped === 0;
+
+    if (bookmarkTimeoutRef.current !== null) {
+      window.clearTimeout(bookmarkTimeoutRef.current);
+    }
+
+    if (isReturningToFirstScreen) {
+      setHideBookmark(false);
+      setIsBookmarkExiting(false);
+    }
+
+    if (isLeavingFirstScreen) {
+      setIsBookmarkExiting(true);
+
+      bookmarkTimeoutRef.current = window.setTimeout(() => {
+        setHideBookmark(true);
+        setIsBookmarkExiting(false);
+      }, BOOKMARK_EXIT_MS);
+    }
+
     animationLockRef.current = true;
     setActiveMobileSection(clamped);
 
@@ -67,6 +101,25 @@ export default function Home() {
       if (animationTimeoutRef.current !== null) {
         window.clearTimeout(animationTimeoutRef.current);
       }
+
+      if (bookmarkTimeoutRef.current !== null) {
+        window.clearTimeout(bookmarkTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const updateViewport = () => {
+      setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
+    };
+
+    updateViewport();
+    setIsMounted(true);
+
+    window.addEventListener("resize", updateViewport);
+
+    return () => {
+      window.removeEventListener("resize", updateViewport);
     };
   }, []);
 
@@ -113,9 +166,23 @@ export default function Home() {
     goToMobileSection(activeMobileSection + (deltaY > 0 ? 1 : -1));
   };
 
+  const handleBookmarkClick = () => {
+    // 目前只保留點擊動畫
+    // 如果你之後想點書籤直接跳下一頁，可以在這裡改成 goToMobileSection(1)
+    console.log("bookmark clicked");
+  };
+
   return (
     <>
       <LanguageToggle />
+
+      {isMounted && !hideBookmark && isMobile && (
+        <BookmarkTab
+          label="About"
+          isExiting={isBookmarkExiting}
+          onClick={handleBookmarkClick}
+        />
+      )}
 
       <div className={styles.hero}>
         <DraggableHead />
