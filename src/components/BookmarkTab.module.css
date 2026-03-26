@@ -1,11 +1,11 @@
 .bookmark {
   position: fixed;
-  top: 0;
+  top: -20px;
   right: 14px;
   width: 60px;
   height: 158px;
   border: none;
-  padding: 28px 0 18px;
+  padding: 42px 0 18px;
   margin: 0;
   cursor: pointer;
   z-index: 999;
@@ -17,40 +17,32 @@
   clip-path: polygon(0 0, 100% 0, 100% 84%, 50% 100%, 0 84%);
   border-radius: 0 0 8px 8px;
 
-  background-color: #e7c99f;
-  background-image: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.18) 0%,
-      rgba(255, 255, 255, 0.04) 22%,
-      rgba(0, 0, 0, 0.05) 100%
-    ),
-    url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 320' preserveAspectRatio='none'>\
-  <rect width='120' height='320' fill='%23e7c99f'/>\
-  <path d='M-10 18 C 22 8, 46 30, 78 20 S 128 10, 142 24' fill='none' stroke='%23c79e6d' stroke-width='3.5' stroke-linecap='round' opacity='0.58'/>\
-  <path d='M-12 34 C 20 50, 46 24, 84 42 S 126 52, 144 36' fill='none' stroke='%23d7b183' stroke-width='2.4' stroke-linecap='round' opacity='0.55'/>\
-  <path d='M-18 58 C 10 42, 34 72, 66 60 S 108 40, 146 58' fill='none' stroke='%23bf8f59' stroke-width='2.8' stroke-linecap='round' opacity='0.42'/>\
-  <path d='M-6 80 C 20 96, 48 64, 76 82 S 120 92, 146 78' fill='none' stroke='%23d8b48b' stroke-width='2.2' stroke-linecap='round' opacity='0.45'/>\
-  <path d='M-14 104 C 18 86, 34 120, 70 108 S 118 92, 144 112' fill='none' stroke='%23c48f57' stroke-width='3.1' stroke-linecap='round' opacity='0.46'/>\
-  <path d='M-8 130 C 22 144, 38 118, 74 132 S 110 148, 144 126' fill='none' stroke='%23ddb68c' stroke-width='2.6' stroke-linecap='round' opacity='0.45'/>\
-  <path d='M-16 154 C 16 136, 48 168, 82 152 S 120 136, 146 154' fill='none' stroke='%23b6844f' stroke-width='3.4' stroke-linecap='round' opacity='0.5'/>\
-  <path d='M-10 182 C 18 196, 36 170, 66 184 S 116 198, 144 178' fill='none' stroke='%23d6ad82' stroke-width='2.1' stroke-linecap='round' opacity='0.44'/>\
-  <path d='M-18 206 C 8 188, 36 220, 68 206 S 118 190, 146 212' fill='none' stroke='%23c38f59' stroke-width='2.9' stroke-linecap='round' opacity='0.48'/>\
-  <path d='M-8 232 C 20 248, 52 222, 84 238 S 114 248, 142 232' fill='none' stroke='%23e2be97' stroke-width='2.2' stroke-linecap='round' opacity='0.42'/>\
-  <path d='M-12 258 C 18 240, 44 272, 76 260 S 112 246, 144 262' fill='none' stroke='%23b9844d' stroke-width='3.1' stroke-linecap='round' opacity='0.46'/>\
-  <path d='M-8 286 C 20 300, 42 278, 74 292 S 114 306, 144 290' fill='none' stroke='%23d8b188' stroke-width='2.3' stroke-linecap='round' opacity='0.42'/>\
-  <ellipse cx='84' cy='112' rx='18' ry='8' fill='none' stroke='%23bf8c56' stroke-width='2.2' opacity='0.38'/>\
-  <ellipse cx='84' cy='112' rx='8' ry='3.5' fill='none' stroke='%23d8b48a' stroke-width='1.4' opacity='0.34'/>\
-  <ellipse cx='30' cy='214' rx='14' ry='6' fill='none' stroke='%23c08a52' stroke-width='2' opacity='0.3'/>\
-</svg>");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-color: #e8d2b2;
+  background-size: 120px auto;
+  background-position: center top;
+  background-repeat: repeat-y;
 
   box-shadow:
-    0 10px 20px rgba(0, 0, 0, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 10px 18px rgba(0, 0, 0, 0.12),
+    -1px 0 0 rgba(90, 63, 39, 0.14),
+    0 1px 0 rgba(90, 63, 39, 0.12),
+    2px 0 0 rgba(120, 85, 52, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
     inset 0 -1px 0 rgba(0, 0, 0, 0.06);
+}
+
+.bookmark::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -4px;
+  width: 6px;
+  height: 84%;
+  background: linear-gradient(180deg, #b88f63 0%, #9f744b 55%, #8a613d 100%);
+  clip-path: polygon(0 0, 100% 6%, 100% 100%, 0 94%);
+  border-radius: 0 4px 4px 0;
+  opacity: 0.95;
+  pointer-events: none;
 }
 
 .bookmark::after {
@@ -61,16 +53,16 @@
   border-radius: 0 0 8px 8px;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.02) 18%,
-    rgba(0, 0, 0, 0.04) 100%
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.015) 18%,
+    rgba(0, 0, 0, 0.035) 100%
   );
   pointer-events: none;
 }
 
 .hole {
   position: absolute;
-  top: 12px;
+  top: 26px;
   left: 50%;
   width: 12px;
   height: 12px;
@@ -86,9 +78,9 @@
 .ropeLeft,
 .ropeRight {
   position: absolute;
-  top: -10px;
+  top: -22px;
   width: 4px;
-  height: 28px;
+  height: 52px;
   border-radius: 999px;
   z-index: 3;
   background: linear-gradient(180deg, #b13f34 0%, #a7382e 50%, #922e25 100%);
@@ -110,39 +102,56 @@
 .label {
   position: relative;
   z-index: 3;
-  margin-top: 14px;
+  margin-top: 24px;
   writing-mode: vertical-rl;
   text-orientation: mixed;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.08em;
   line-height: 1.1;
-  color: #6a4727;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+  color: #5a3920;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.24);
   user-select: none;
   white-space: nowrap;
 }
 
 @media (max-width: 500px) {
   .bookmark {
+    top: -18px;
     right: 10px;
     width: 54px;
     height: 144px;
-    padding: 26px 0 16px;
+    padding: 38px 0 16px;
+    background-size: 108px auto;
+
+    box-shadow:
+      0 9px 16px rgba(0, 0, 0, 0.12),
+      -1px 0 0 rgba(90, 63, 39, 0.12),
+      0 1px 0 rgba(90, 63, 39, 0.1),
+      2px 0 0 rgba(120, 85, 52, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.06);
   }
 
   .hole {
-    top: 11px;
+    top: 24px;
     width: 11px;
     height: 11px;
   }
 
   .ropeLeft,
   .ropeRight {
-    height: 26px;
+    top: -20px;
+    height: 48px;
   }
 
   .label {
+    margin-top: 22px;
     font-size: 12px;
+  }
+
+  .bookmark::before {
+    right: -3px;
+    width: 5px;
   }
 }
