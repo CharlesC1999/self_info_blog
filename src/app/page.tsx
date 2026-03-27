@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import { ReactNode, useEffect, useRef, useState } from "react";
@@ -38,6 +38,8 @@ export default function Home() {
   const [activeMobileSection, setActiveMobileSection] = useState(0);
   const [isBookmarkExiting, setIsBookmarkExiting] = useState(false);
   const [hideBookmark, setHideBookmark] = useState(false);
+  const [bookmarkReturnAnimationKey, setBookmarkReturnAnimationKey] =
+    useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -73,6 +75,7 @@ export default function Home() {
     if (isReturningToFirstScreen) {
       setHideBookmark(false);
       setIsBookmarkExiting(false);
+      setBookmarkReturnAnimationKey((current) => current + 1);
     }
 
     if (isLeavingFirstScreen) {
@@ -167,8 +170,6 @@ export default function Home() {
   };
 
   const handleBookmarkClick = () => {
-    // 目前只保留點擊動畫
-    // 如果你之後想點書籤直接跳下一頁，可以在這裡改成 goToMobileSection(1)
     console.log("bookmark clicked");
   };
 
@@ -180,6 +181,7 @@ export default function Home() {
         <BookmarkTab
           label="About"
           isExiting={isBookmarkExiting}
+          returnAnimationKey={bookmarkReturnAnimationKey}
           onClick={handleBookmarkClick}
         />
       )}
